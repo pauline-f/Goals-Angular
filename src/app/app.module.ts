@@ -18,8 +18,10 @@ import { RouterModule, Routes } from '@angular/router';
 const appRoutes: Routes = [
   { path: 'auth/signup', component: SignupComponent },
   { path: 'auth/signin', component: SigninComponent },
-  { path: 'goal/list', component: ListComponent },
-  { path: 'goal/add', component: AddComponent}
+  { path: 'goal/list', canActivate:[AuthGuardService], component: ListComponent },
+  { path: 'goal/add', canActivate:[AuthGuardService], component: AddComponent },
+  { path: '', redirectTo:'goal/list', pathMatch:'full' },
+  { path:'**', redirectTo:'goal/list'}
 ];
 
 @NgModule({
