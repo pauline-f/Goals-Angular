@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder , Validators} from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-signin',
-  templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class SigninComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
-  signInForm: FormGroup;
+  loginForm: FormGroup;
   errorMessage: string;
 
   constructor(private formBuilder: FormBuilder,
-              private authService: AuthService,
+              private userService: UserService,
               private router: Router) { }
 
   ngOnInit() {
@@ -22,16 +22,16 @@ export class SigninComponent implements OnInit {
   }
 
   initForm() {
-    this.signInForm = this.formBuilder.group( {
+    this.loginForm = this.formBuilder.group( {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.pattern(/[0-9a-zA-Z]{6,}/)]],
     });
   }
 
   onSubmit() {
-    const email = this.signInForm.get('email').value;
-    const password = this.signInForm.get('password').value;
-    this.authService.signInUser(email, password).then(
+    const email = this.loginForm.get('email').value;
+    const password = this.loginForm.get('password').value;
+    this.userService.signInUser(email, password).then(
       () => {
         this.router.navigate(['/goal/list']);
       },
