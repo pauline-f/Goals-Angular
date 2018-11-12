@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
+  userUid: String;
 
   constructor(private router: Router) { }
 
@@ -14,6 +15,7 @@ export class AuthGuardService implements CanActivate {
         firebase.auth().onAuthStateChanged(
           (user) => {
             if (user) {
+              this.userUid = user.uid;
               resolve(true);
             } else {
               this.router.navigate(['/user', 'login']);
@@ -23,6 +25,14 @@ export class AuthGuardService implements CanActivate {
         );
       }
     );
+  }
+
+  getUid() {
+    if (this.userUid === "") {
+      return null;
+    } else {
+      return this.userUid;
+    }
   }
 
 }

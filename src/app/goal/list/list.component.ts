@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { GoalService } from '../../services/goal.service';
 import { Router } from '@angular/router';
 import { Goal } from '../../models/Goal.model';
@@ -9,21 +8,14 @@ import { Goal } from '../../models/Goal.model';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnInit {
   goals: Goal[];
-  goalsSubscription: Subscription;
-
+  
   constructor(private goalService: GoalService,
               private router: Router) { }
 
   ngOnInit() {
-    this.goalsSubscription = this.goalService.goalsSubject.subscribe(
-      (goals: Goal[]) => {
-        this.goals = goals;
-      }
-    );
-    this.goalService.getGoals();
-    this.goalService.emitGoals();
+    
   }
 
   onNewGoal() {
@@ -38,7 +30,5 @@ export class ListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/goal', 'view', id]);
   }
 
-  ngOnDestroy() {
-    this.goalsSubscription.unsubscribe();
-  }
+  
 }
