@@ -2,7 +2,7 @@
   <div class="col-xs-12">
     <h2>Your Goals</h2>
     <div class="list-group">
-      <button class="list-group-item" *ngFor="let goal of goals" let i=index (click)="onViewGoal(goal)">
+      <button class="list-group-item" *ngFor="let goal of goals" (click)="onViewGoal(goal.id)">
         <h3>{{ goal.goal }}</h3> 
 
       </button>

@@ -14,14 +14,14 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
-import { SingleGoalComponent } from './goal/single-goal/single-goal.component';
+import { ViewComponent } from './goal/view/view.component';
 
 const appRoutes: Routes = [
   { path: 'user/register', component: RegisterComponent },
   { path: 'user/login', component: LoginComponent },
   { path: 'goal/list', canActivate:[AuthGuardService], component: ListComponent },
   { path: 'goal/add', canActivate:[AuthGuardService], component: AddComponent },
-  { path: 'goal/view/:id', canActivate:[AuthGuardService], component: SingleGoalComponent },
+  { path: 'goal/view/:id', canActivate:[AuthGuardService], component: ViewComponent },
   { path: '', redirectTo:'goal/list', pathMatch:'full' },
   { path:'**', redirectTo:'goal/list'}
 ];
@@ -34,7 +34,7 @@ const appRoutes: Routes = [
     ListComponent,
     AddComponent,
     HeaderComponent,
-    SingleGoalComponent
+    ViewComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(appRoutes)

@@ -32,12 +32,12 @@ export class GoalService {
     );
   }
 
-  getSingleGoal(id:number) {
-    return new Promise (
+  getAGoal(id:string) {
+    return new Promise<Goal>(
       (resolve, reject) => {
-        firebase.database().ref('/goal/' + id).once('value').then (
+        firebase.database().ref('goal/' + this.getUserUid() + "/" + id).once('value').then (
           (data) => {
-            resolve (data.val());
+            resolve(data.val());
           }, (error) => {
             reject(error);
           }
@@ -45,6 +45,7 @@ export class GoalService {
       }
     );
   }
+
 
   createNewGoal(newGoal:Goal) {
     return new Promise(
