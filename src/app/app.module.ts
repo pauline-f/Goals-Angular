@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { ViewComponent } from './goal/view/view.component';
+import { AddActionComponent } from './action/add-action/add-action.component';
 
 const appRoutes: Routes = [
   { path: 'user/register', component: RegisterComponent },
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
   { path: 'goal/list', canActivate:[AuthGuardService], component: ListComponent },
   { path: 'goal/add', canActivate:[AuthGuardService], component: AddComponent },
   { path: 'goal/view/:id', canActivate:[AuthGuardService], component: ViewComponent },
+  { path: 'action/add/:id', canActivate:[AuthGuardService], component: AddActionComponent },
   { path: '', redirectTo:'goal/list', pathMatch:'full' },
   { path:'**', redirectTo:'goal/list'}
 ];
@@ -34,7 +36,8 @@ const appRoutes: Routes = [
     ListComponent,
     AddComponent,
     HeaderComponent,
-    ViewComponent
+    ViewComponent,
+    AddActionComponent
   ],
   imports: [
     BrowserModule, FormsModule, ReactiveFormsModule, HttpClientModule, RouterModule.forRoot(appRoutes)

@@ -1,3 +1,8 @@
-<p>
-  {{ goal }}
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>{{ name }}</h2>
+    <div class="list-group">
+      <button class="btn btn-primary" type="button" (click)="addAction(goal.id)">Add a action</button>
+    </div>
+  </div>
+</div>

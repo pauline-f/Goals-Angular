@@ -30,7 +30,7 @@ export class ListComponent implements OnInit {
     this.goalService.removeGoal(goal);
   }
 
-  onViewGoal(id: number) {
+  onViewGoal(id: string) {
     console.log(id);
     this.router.navigate(['/goal', 'view', id]);
   }
