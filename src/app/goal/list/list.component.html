@@ -2,8 +2,8 @@
   <div class="col-xs-12">
     <h2>Your Goals</h2>
     <div class="list-group">
-      <button class="list-group-item" *ngFor="let goal of goals" let i=index (click)="onViewGoal(i)">
-        <h3>{{ goal }}</h3> 
+      <button class="list-group-item" *ngFor="let goal of goals" let i=index (click)="onViewGoal(goal)">
+        <h3>{{ goal.goal }}</h3> 
 
       </button>
     </div>

@@ -31,7 +31,7 @@ export class AddComponent implements OnInit {
   onSaveData() {
     const goal = this.addGoalForm.get('goal').value;
     
-    const newGoal = new Goal(goal);
+    const newGoal = new Goal("", goal);
     this.goalService.createNewGoal(newGoal)
     .then(res => {
       this.router.navigate(['/goal', 'list', res]);

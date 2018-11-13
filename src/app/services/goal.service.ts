@@ -20,7 +20,16 @@ export class GoalService {
   }
 
   getGoals() {
-    
+    return new Promise<Goal[]>(
+      (resolve, reject) => {
+        firebase.database().ref('goal/' + this.getUserUid()).once('value', (data) => {
+            resolve(data.val());
+          }, () => {
+            resolve([]);
+          }
+        );
+      }
+    );
   }
 
   getSingleGoal(id:number) {
@@ -43,6 +52,10 @@ export class GoalService {
         firebase.database().ref('goal/' + this.getUserUid()).push(newGoal).then (
           (data) => {
             resolve(data.key);
+            //Update id with the firebase value
+            var newGoalKey = data.key;
+            var goal = {id: newGoalKey};
+            return firebase.database().ref('goal/' + this.getUserUid() + '/' + newGoalKey).update(goal);
           }, (error) => {
             reject(error);
           }
@@ -50,6 +63,8 @@ export class GoalService {
       }
     );
   }
+
+  
 
   removeGoal(goal:Goal) {
     

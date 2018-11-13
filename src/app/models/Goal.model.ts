@@ -1,4 +1,4 @@
 export class Goal {
-    constructor (public goal: string) {
+    constructor (public id: string, public goal: string) {
     }
 }
