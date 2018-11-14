@@ -1,3 +1,13 @@
-<p>
-  add-action works!
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Add an action</h2>
+    <form [formGroup]="addActionForm" (ngSubmit)="onSaveData()">
+      <div class="form-group">
+        <label for="action">Action</label>
+        <input type="text" id="action" class="form-control" formControlName="action">
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="addActionForm.invalid">Add action</button>
+    </form>
+
+  </div>
+</div>

@@ -31,7 +31,6 @@ export class ListComponent implements OnInit {
   }
 
   onViewGoal(id: string) {
-    console.log(id);
     this.router.navigate(['/goal', 'view', id]);
   }
 

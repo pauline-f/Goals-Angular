@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Goal } from '../models/Goal.model';
 import * as firebase from 'firebase';
 import { AuthGuardService } from '../services/auth-guard.service';
+import { Action } from '../models/Action.models';
 
 @Injectable()
 export class GoalService {
@@ -12,11 +13,6 @@ export class GoalService {
 
   getUserUid() {
     return this.authGuardService.getUid();
-  }
-
-
-  saveGoals() {
-    
   }
 
   getGoals() {
@@ -57,6 +53,20 @@ export class GoalService {
             var newGoalKey = data.key;
             var goal = {id: newGoalKey};
             return firebase.database().ref('goal/' + this.getUserUid() + '/' + newGoalKey).update(goal);
+          }, (error) => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
+
+  createNewAction(newAction:Action, idGoal:string) {
+    return new Promise(
+      (resolve, reject) => {
+        firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal).push(newAction).then (
+          (data) => {
+            resolve(data.key);
           }, (error) => {
             reject(error);
           }
