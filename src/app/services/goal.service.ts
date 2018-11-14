@@ -28,6 +28,19 @@ export class GoalService {
     );
   }
 
+  getActions(idGoal: string) {
+    return new Promise<Action[]>(
+      (resolve, reject) => {
+        firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions').once('value', (data) => {
+            resolve(data.val());
+          }, () => {
+            resolve([]);
+          }
+        );
+      }
+    );
+  }
+
   getAGoal(id:string) {
     return new Promise<Goal>(
       (resolve, reject) => {
@@ -64,7 +77,7 @@ export class GoalService {
   createNewAction(newAction:Action, idGoal:string) {
     return new Promise(
       (resolve, reject) => {
-        firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal).push(newAction).then (
+        firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions').push(newAction).then (
           (data) => {
             resolve(data.key);
           }, (error) => {
