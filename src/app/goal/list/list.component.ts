@@ -10,14 +10,21 @@ import { Goal } from '../../models/Goal.model';
 })
 export class ListComponent implements OnInit {
   goals: Goal[] = [];
-  
+
   constructor(private goalService: GoalService,
               private router: Router) { }
 
   ngOnInit() {
     this.goalService.getGoals().then(goals => {
+      
       for (let id in goals) {
-        this.goals.push(goals[id]);
+        var actions = [];
+        for (let idAction in goals[id].actions) {
+          actions.push(goals[id].actions[idAction]);
+        }
+        var goal = new Goal(goals[id].id, goals[id].goal, actions);
+        this.goals.push(goal);
+
       }
     });
   }
