@@ -57,7 +57,7 @@ export class AddActionComponent implements OnInit {
     const sat = this.addActionForm.get('sat').value;
     const sun = this.addActionForm.get('sun').value;
     
-    const newAction = new Action(action);
+    const newAction = new Action(null, action, mon, tue, wed, thu, fri, sat, sun);
     this.goalService.createNewAction(newAction, this.idGoal)
     .then(res => {
       this.router.navigate(['/goal', 'list', res]);
@@ -68,8 +68,6 @@ export class AddActionComponent implements OnInit {
   }
 
   clickAll() {
-    console.log("coucou");
-
     this.allDay = !this.addActionForm.get('allDay').value;
     this.mon = this.addActionForm.get('mon').value;
     this.tue = this.addActionForm.get('tue').value;

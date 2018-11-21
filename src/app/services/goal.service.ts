@@ -80,6 +80,10 @@ export class GoalService {
         firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions').push(newAction).then (
           (data) => {
             resolve(data.key);
+            //Update id with the firebase value
+            var newActionKey = data.key;
+            var action = {id: newActionKey};
+            return firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions' + '/' + newActionKey).update(action);
           }, (error) => {
             reject(error);
           }
@@ -87,7 +91,6 @@ export class GoalService {
       }
     );
   }
-
   
 
   removeGoal(goal:Goal) {
