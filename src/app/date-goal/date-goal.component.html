@@ -1,3 +1,7 @@
 <p>
   {{ date | date:'fullDate' }}
 </p>
+
+<div class="list-group-item" *ngFor="let action of actions">
+  <h5>{{ action.action }}</h5>
+</div>
