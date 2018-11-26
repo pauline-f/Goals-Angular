@@ -1,7 +1,18 @@
-<p>
-  {{ date | date:'fullDate' }}
-</p>
+<div class="row">
+  <div class="col-xs-12">
+    <h2>{{ date | date:'fullDate' }}</h2>
+    <form>
+      <div class="form-group">
+        <div class="list-group-item" *ngFor="let action of actions">
+          <div class="form-check">
+            <input type="checkbox">
+            <label class="form-check-label">
+                {{ action.action }}
+            </label>
+          </div>
+        </div>
+      </div>
+    </form>
 
-<div class="list-group-item" *ngFor="let action of actions">
-  <h5>{{ action.action }}</h5>
+  </div>
 </div>
