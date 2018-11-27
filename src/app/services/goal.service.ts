@@ -3,6 +3,7 @@ import { Goal } from '../models/Goal.model';
 import * as firebase from 'firebase';
 import { AuthGuardService } from '../services/auth-guard.service';
 import { Action } from '../models/Action.models';
+import { RecapDay } from '../models/RecapDay.models';
 
 @Injectable()
 export class GoalService {
@@ -84,6 +85,34 @@ export class GoalService {
             var newActionKey = data.key;
             var action = {id: newActionKey};
             return firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions' + '/' + newActionKey).update(action);
+          }, (error) => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
+
+  createNewRecap(day:string, newRecap:RecapDay) {
+    return new Promise(
+      (resolve, reject) => {
+        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).push(newRecap).then (
+          (data) => {
+            resolve(data.key);
+          }, (error) => {
+            reject(error);
+          }
+        );
+      }
+    );
+  }
+
+  getARecap(day:Date) {
+    return new Promise<RecapDay>(
+      (resolve, reject) => {
+        firebase.database().ref('recapDay/' + this.getUserUid() + "/" + day).once('value').then (
+          (data) => {
+            resolve(data.val());
           }, (error) => {
             reject(error);
           }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GoalService } from '../services/goal.service';
 import { Action } from '../models/Action.models';
+import { RecapDay } from '../models/RecapDay.models';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-date-goal',
@@ -8,15 +12,25 @@ import { Action } from '../models/Action.models';
   styleUrls: ['./date-goal.component.css']
 })
 export class DateGoalComponent implements OnInit {
+  recapDayForm: FormGroup;
   date: Date;
   day: number;
   actions: Action[] = [];
+  dateToSave: string;
+  done: boolean;
 
-  constructor(private goalService: GoalService) { }
+  constructor(private goalService: GoalService,
+              private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    this.date = new Date;
+    this.recapDayForm = this.formBuilder.group( {
+      done: [false, Validators.required],
+    });
+
+    this.date = new Date();
     this.day = this.date.getDay();
+    this.dateToSave = this.date.getDate() + "-" + this.date.getMonth() + "-" + this.date.getFullYear();
+    console.log(this.dateToSave);
     
     this.goalService.getGoals().then(goals => {
       var actionForADate = [];
@@ -62,6 +76,13 @@ export class DateGoalComponent implements OnInit {
       }        
       this.actions = actionForADate;
     });
+  }
+
+  saveRecap(idAction: string, i: number) {
+    var elements = (<HTMLInputElement[]><any>document.getElementsByName("done"));
+    
+    var recap = new RecapDay(idAction, elements[i].checked);
+    this.goalService.createNewRecap(this.dateToSave, recap);
   }
 
 }
