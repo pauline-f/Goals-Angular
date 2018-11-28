@@ -107,7 +107,7 @@ export class GoalService {
     );
   }
 
-  getARecap(day:Date) {
+  getARecap(day:string) {
     return new Promise<RecapDay>(
       (resolve, reject) => {
         firebase.database().ref('recapDay/' + this.getUserUid() + "/" + day).once('value').then (
