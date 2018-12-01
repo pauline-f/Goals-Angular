@@ -102,7 +102,19 @@ export class DateGoalComponent implements OnInit {
         nb++;
       }        
       this.actions = actionForADate;
+      this.goalService.checkDayExists(this.dateToSave).then (res => {
+        console.log(res);
+      });
+        
+      //this.createNewRecapWithDoneFalse();
     });
+  }
+
+  createNewRecapWithDoneFalse() {
+    for( let action in this.actions) {
+      console.log(this.actions[action].id);
+      //var recap = new RecapDay(this.actions[action], false);
+    }
   }
 
   clickCheckbox(i:number) {
@@ -115,6 +127,9 @@ export class DateGoalComponent implements OnInit {
     var elements = (<HTMLInputElement[]><any>document.getElementsByName("done"));
     console.log(elements.length);
     for (let element in elements) {
+      console.log(idAction);
+      console.log(elements[element].checked);
+      
       var recap = new RecapDay(idAction, elements[element].checked);
       this.goalService.createNewRecap(this.dateToSave, recap);
     }

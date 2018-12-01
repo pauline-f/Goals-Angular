@@ -93,9 +93,36 @@ export class GoalService {
     );
   }
 
+  checkDayExists(day:string) {
+    return new Promise(
+      (resolve, reject) => {
+        //firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).on("value", function(snapshot) {
+        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).once("value").then (
+          function(snapshot) {
+          //(snapshot) => {
+            resolve(snapshot.exists());
+          }, (error) => {
+            reject(error);
+          }
+        );
+      });
+  }
+
   createNewRecap(day:string, newRecap:RecapDay) {
     return new Promise(
       (resolve, reject) => {
+        //Search if the date already exists
+        //firebase.database().ref('recapDay/' + this.getUserUid()).child('recapDay/' + this.getUserUid()).equalTo(day).on("value", function(snapshot) {
+        //firebase.database().ref('recapDay/' + this.getUserUid()).on("value", function(snapshot) {
+        //  console.log(snapshot.val());
+        //  snapshot.forEach(function(data) {
+        //    if (data.key === day) {
+        //      console.log(data.key); 
+        //    }
+        //  });
+        //});
+
+        
         firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).push(newRecap).then (
           (data) => {
             resolve(data.key);
