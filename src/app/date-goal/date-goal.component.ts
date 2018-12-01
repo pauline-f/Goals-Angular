@@ -103,7 +103,9 @@ export class DateGoalComponent implements OnInit {
       }        
       this.actions = actionForADate;
       this.goalService.checkDayExists(this.dateToSave).then (res => {
-        console.log(res);
+        if (!res) {
+          this.createNewRecapWithDoneFalse();
+        }
       });
         
       //this.createNewRecapWithDoneFalse();
@@ -113,7 +115,8 @@ export class DateGoalComponent implements OnInit {
   createNewRecapWithDoneFalse() {
     for( let action in this.actions) {
       console.log(this.actions[action].id);
-      //var recap = new RecapDay(this.actions[action], false);
+      var recap = new RecapDay(this.actions[action].id, false);
+      this.goalService.createNewRecap(this.dateToSave, recap);
     }
   }
 
