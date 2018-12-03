@@ -96,10 +96,8 @@ export class GoalService {
   checkDayExists(day:string) {
     return new Promise(
       (resolve, reject) => {
-        //firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).on("value", function(snapshot) {
-        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).once("value").then (
+        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day).once("value").then (
           function(snapshot) {
-          //(snapshot) => {
             resolve(snapshot.exists());
           }, (error) => {
             reject(error);
@@ -111,19 +109,7 @@ export class GoalService {
   createNewRecap(day:string, newRecap:RecapDay) {
     return new Promise(
       (resolve, reject) => {
-        //Search if the date already exists
-        //firebase.database().ref('recapDay/' + this.getUserUid()).child('recapDay/' + this.getUserUid()).equalTo(day).on("value", function(snapshot) {
-        //firebase.database().ref('recapDay/' + this.getUserUid()).on("value", function(snapshot) {
-        //  console.log(snapshot.val());
-        //  snapshot.forEach(function(data) {
-        //    if (data.key === day) {
-        //      console.log(data.key); 
-        //    }
-        //  });
-        //});
-
-        
-        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + day).push(newRecap).then (
+        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day).push(newRecap).then (
           (data) => {
             resolve(data.key);
           }, (error) => {
@@ -134,10 +120,44 @@ export class GoalService {
     );
   }
 
+  checkActionExistsForADay(day:string, idAction:string) {
+    return new Promise(
+      (resolve, reject) => {
+        //firebase.database().ref('recapDay/' + this.getUserUid()  + '/' + 'day' + '/' + day).child('idAction').equalTo(idAction).once("value").then (
+        firebase.database().ref('recapDay/' + this.getUserUid()  + '/' + 'day' + '/' + day).once("value").then (        
+        (data) => {
+            //console.log(data.val());
+            
+            for (let action in data.val()) {
+              //console.log("Search");
+              //console.log(idAction);
+              //console.log(action);
+              firebase.database().ref('recapDay/' + this.getUserUid()  + '/' + 'day' + '/' + day + '/' + action + '/' + 'idAction').once("value").then (
+                (result) => {
+                  //console.log(result.exists());
+                  //console.log(result.val());
+                  if (result.val() === idAction) {
+                    resolve(true);
+                  }
+                }, (error) => {
+                  reject(error);
+                }
+              );
+              
+            }
+            
+            
+          }, (error) => {
+            reject(error);
+          }
+        );
+      });
+  }
+
   getARecap(day:string) {
     return new Promise<RecapDay>(
       (resolve, reject) => {
-        firebase.database().ref('recapDay/' + this.getUserUid() + "/" + day).once('value').then (
+        firebase.database().ref('recapDay/' + this.getUserUid() + "/" + 'day' + '/' + day).once('value').then (
           (data) => {
             resolve(data.val());
           }, (error) => {
