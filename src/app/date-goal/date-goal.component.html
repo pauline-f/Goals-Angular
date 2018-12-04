@@ -3,9 +3,9 @@
     <h2>{{ date | date:'fullDate' }}</h2>
     <form [formGroup]="recapDayForm">
       <div class="form-group">
-        <div class="list-group-item" *ngFor="let action of actions; let i = index">
+        <div class="list-group-item" *ngFor="let action of actionsDone; let i = index">
           <div class="form-check">
-            <input class="form-check-input" [checked]=done[i] type="checkbox" id={{action.id}} name="done" formControlName="done" (click)="saveRecap(action.id, i)">
+            <input class="form-check-input" [checked]=done[i] type="checkbox" id={{action.idAction}} name="done" formControlName="done" (click)="saveRecap(action.id, action.idAction, i)">
             <label class="form-check-label" for="done">
                 {{ action.action }}
             </label>

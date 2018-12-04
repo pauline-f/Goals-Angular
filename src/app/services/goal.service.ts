@@ -112,6 +112,9 @@ export class GoalService {
         firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day).push(newRecap).then (
           (data) => {
             resolve(data.key);
+            var newRecapKey = data.key;
+            var recap = {id: newRecapKey};
+            return firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day + '/' + newRecapKey).update(recap);
           }, (error) => {
             reject(error);
           }
@@ -120,38 +123,27 @@ export class GoalService {
     );
   }
 
-  checkActionExistsForADay(day:string, idAction:string) {
+  updateRecap(day:string, id:string, idAction:string, done:boolean) {
     return new Promise(
       (resolve, reject) => {
-        //firebase.database().ref('recapDay/' + this.getUserUid()  + '/' + 'day' + '/' + day).child('idAction').equalTo(idAction).once("value").then (
-        firebase.database().ref('recapDay/' + this.getUserUid()  + '/' + 'day' + '/' + day).once("value").then (        
-        (data) => {
-            //console.log(data.val());
-            
-            for (let action in data.val()) {
-              //console.log("Search");
-              //console.log(idAction);
-              //console.log(action);
-              firebase.database().ref('recapDay/' + this.getUserUid()  + '/' + 'day' + '/' + day + '/' + action + '/' + 'idAction').once("value").then (
-                (result) => {
-                  //console.log(result.exists());
-                  //console.log(result.val());
-                  if (result.val() === idAction) {
-                    resolve(true);
-                  }
-                }, (error) => {
-                  reject(error);
-                }
-              );
-              
-            }
-            
-            
-          }, (error) => {
-            reject(error);
-          }
-        );
-      });
+        //firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day).update(newRecap).then (
+         var key = firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day + '/' + id).key;
+        
+          //(data) => {
+            //console.log(data);
+            console.log(key);
+            //resolve(data.key);
+            //Update id with the firebase value
+            //var key = data.key;
+            var recap = {done: done};
+            //return firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions' + '/' + newActionKey).update(action);
+            return firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day  + '/' + key).update(recap);
+          //}, (error) => {
+          //  reject(error);
+          //}
+        //);
+      }
+    );
   }
 
   getARecap(day:string) {

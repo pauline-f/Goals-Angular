@@ -27,7 +27,7 @@ export class DateGoalComponent implements OnInit {
     this.recapDayForm = this.formBuilder.group( {
       done: [false, Validators.required],
     });
-
+    
     // Get date for today
     this.date = new Date();
     this.day = this.date.getDay();
@@ -35,25 +35,9 @@ export class DateGoalComponent implements OnInit {
     
     var actionDone = [];
 
-    // Check if the day already exists in Firebase
-    this.goalService.checkDayExists(this.dateToSave).then (res => {
-      if (!res) { //If day doesn't exist in Firebase
-        this.createNewRecapWithDoneFalse();
-      } else { //If day exists
-        var doneArray = [];
-        this.goalService.getARecap(this.dateToSave).then(res => {
-          for (let id in res) {
-            actionDone.push(res[id].idAction);
-            doneArray.push(res[id].done);
-          }
-          
-          this.done = doneArray;
-        });
-        
 
 
-
-        var actionForADate = [];
+    var actionForADate = [];
         this.goalService.getGoals().then(goals => {
           
           for (let id in goals) {
@@ -61,7 +45,21 @@ export class DateGoalComponent implements OnInit {
             for (let idAction in goals[id].actions) {
               if (this.day === 1) {
                 if (goals[id].actions[idAction].mon === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
+                  var value = [goals[id].actions[idAction].id, goals[id].actions[idAction].action];
+                  actionForADate.push(value);
+                  //for (let i in actionDone) {
+                  //  if (actionDone[i] === goals[id].actions[idAction].id) {
+                  //    console.log(this.done[i]);
+                  //    this.done[i];
+                      //this.done[i] = true;
+                      //actionDone[i].checked = true;
+                  //  }
+                  //}
+                }
+              }
+              if (this.day === 2) {
+                if (goals[id].actions[idAction].tue === true) {
+                  actionForADate.push([goals[id].actions[idAction].id, goals[id].actions[idAction].action]);
                   for (let i in actionDone) {
                     if (actionDone[i] === goals[id].actions[idAction].id) {
                       console.log(this.done[i]);
@@ -72,64 +70,88 @@ export class DateGoalComponent implements OnInit {
                   }
                 }
               }
-              if (this.day === 2) {
-                if (goals[id].actions[idAction].tue === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
-                }
-              }
               if (this.day === 3) {
                 if (goals[id].actions[idAction].wed === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
+                  actionForADate.push(goals[id].actions[idAction].id, goals[id].actions[idAction].action);
                 }
               }
               if (this.day === 4) {
                 if (goals[id].actions[idAction].thu === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
+                  actionForADate.push(goals[id].actions[idAction].id, goals[id].actions[idAction].action);
                 }
               }
               if (this.day === 5) {
                 if (goals[id].actions[idAction].fri === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
+                  actionForADate.push(goals[id].actions[idAction].id, goals[id].actions[idAction].action);
                 }
               }
               if (this.day === 6) {
                 if (goals[id].actions[idAction].sat === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
+                  actionForADate.push(goals[id].actions[idAction].id, goals[id].actions[idAction].action);
                 }
               }
               if (this.day === 0) {
                 if (goals[id].actions[idAction].sun === true) {
-                  actionForADate.push(goals[id].actions[idAction]);
+                  actionForADate.push(goals[id].actions[idAction].id, goals[id].actions[idAction].action);
                 }
               }
             }
           }        
           this.actions = actionForADate;
-          this.actionsDone = actionDone;
-          
-          
-          var actionToCheck = "";
-          // Check if actions exists in Recap
-          for (let action in this.actions) {
-            actionToCheck = this.actions[action].id;
-            
-            var find : boolean = false;
-            for (let a in this.actionsDone) {
-              if (actionToCheck === this.actionsDone[a]) {
-                find = true;
-              }
-            }
-            if (find === false) {
-              console.log("Find === false");
-              var recap = new RecapDay(this.actions[action].id, false);
-              this.goalService.createNewRecap(this.dateToSave, recap);
-            }
-          }
-          
         });
 
 
-      }
+
+
+
+
+
+    // Check if the day already exists in Firebase
+    this.goalService.checkDayExists(this.dateToSave).then (res => {
+      if (!res) { //If day doesn't exist in Firebase
+        this.createNewRecapWithDoneFalse();
+      } 
+      
+      //If day exists
+        var doneArray = [];
+        this.goalService.getARecap(this.dateToSave).then(res => {
+          
+          for (let id in res) {
+            //console.log(res[id]);
+            actionDone.push(res[id]);
+            doneArray.push(res[id].done);
+          }
+          
+          this.done = doneArray;
+        });
+        
+        this.actionsDone = actionDone;
+
+        var actionToCheck = "";
+        // Check if actions exists in Recap
+        var actionsGoal = this.actions;
+        console.log(actionsGoal);
+
+        for (let action in actionsGoal) {
+          //console.log(action);
+          //console.log(actionsGoal[action]);
+          actionToCheck = actionsGoal[action][0];
+          console.log(actionToCheck);
+          var find : boolean = false;
+
+          for (let a in actionDone) {
+            console.log(actionDone[a]);
+            if (actionToCheck === actionDone[a]) {
+              find = true;
+            }
+          }
+          if (find === false) {
+            //console.log("Find === false");
+            var recap = new RecapDay(null, actionsGoal[action].id, actionsGoal[action].action, false);
+            //this.goalService.createNewRecap(this.dateToSave, recap);
+          }
+        }
+      
     });
 
   }
@@ -139,9 +161,10 @@ export class DateGoalComponent implements OnInit {
   createNewRecapWithDoneFalse() {
     for( let action in this.actions) {
       console.log(this.actions[action].id);
-      var recap = new RecapDay(this.actions[action].id, false);
+      var recap = new RecapDay(null, this.actions[action].id, this.actions[action].action, false);
       this.goalService.createNewRecap(this.dateToSave, recap);
     }
+    //this.actionsDone = this.actions;
   }
 
   clickCheckbox(i:number) {
@@ -150,10 +173,16 @@ export class DateGoalComponent implements OnInit {
     elements[i].checked = true;
   }
 
-  saveRecap(idAction: string, i: number) {
-    this.goalService.checkActionExistsForADay(this.dateToSave, idAction).then (res => {
-      console.log(res);
-    });
+  saveRecap(id:string, idAction: string, i:number) {
+    var elements = (<HTMLInputElement[]><any>document.getElementsByName("done"));
+    //for (let element in elements) {
+      console.log(idAction);
+      console.log(elements[i].checked);
+      
+      //var recap = new RecapDay(idAction, elements[i].checked);
+      this.goalService.updateRecap(this.dateToSave, id, idAction, elements[i].checked).then (res => {
+        console.log(res);
+      });
 
 
     //var elements = (<HTMLInputElement[]><any>document.getElementsByName("done"));
@@ -164,7 +193,8 @@ export class DateGoalComponent implements OnInit {
       
     //  var recap = new RecapDay(idAction, elements[element].checked);
     //  this.goalService.createNewRecap(this.dateToSave, recap);
-    }
+    //}
+  }
     
 }
 

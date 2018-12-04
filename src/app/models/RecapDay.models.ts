@@ -1,5 +1,7 @@
 export class RecapDay {
-    constructor (public idAction: string,
+    constructor (public id: string,
+                 public idAction: string,
+                 public action: string,
                  public done: boolean) {
     }
 }
