@@ -109,7 +109,7 @@ export class GoalService {
   createNewRecap(day:string, newRecap:RecapDay) {
     return new Promise(
       (resolve, reject) => {
-        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day).push(newRecap).then (
+        firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day + '/').push(newRecap).then (
           (data) => {
             resolve(data.key);
             var newRecapKey = data.key;
