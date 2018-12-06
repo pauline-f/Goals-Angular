@@ -8,8 +8,6 @@ import { RecapDay } from '../models/RecapDay.models';
 @Injectable()
 export class GoalService {
 
-  
-
   constructor(private authGuardService: AuthGuardService) { }
 
   getUserUid() {
@@ -126,22 +124,9 @@ export class GoalService {
   updateRecap(day:string, id:string, idAction:string, done:boolean) {
     return new Promise(
       (resolve, reject) => {
-        //firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day).update(newRecap).then (
          var key = firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day + '/' + id).key;
-        
-          //(data) => {
-            //console.log(data);
-            console.log(key);
-            //resolve(data.key);
-            //Update id with the firebase value
-            //var key = data.key;
-            var recap = {done: done};
-            //return firebase.database().ref('goal/' + this.getUserUid() + '/' + idGoal + '/' + 'actions' + '/' + newActionKey).update(action);
-            return firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day  + '/' + key).update(recap);
-          //}, (error) => {
-          //  reject(error);
-          //}
-        //);
+          var recap = {done: done};
+          return firebase.database().ref('recapDay/' + this.getUserUid() + '/' + 'day' + '/' + day  + '/' + key).update(recap);
       }
     );
   }
