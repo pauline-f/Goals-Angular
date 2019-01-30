@@ -66,35 +66,4 @@ export class AddActionComponent implements OnInit {
       console.log("Error while inserting quote", err);
     });
   }
-
-  clickAll() {
-    this.allDay = !this.addActionForm.get('allDay').value;
-    this.mon = this.addActionForm.get('mon').value;
-    this.tue = this.addActionForm.get('tue').value;
-    this.wed = this.addActionForm.get('wed').value;
-    this.thu = this.addActionForm.get('thu').value;
-    this.fri = this.addActionForm.get('fri').value;
-    this.sat = this.addActionForm.get('sat').value;
-    this.sun = this.addActionForm.get('sun').value;
-
-    if (this.allDay) {
-      this.mon = true;
-      this.tue = true;
-      this.wed = true;
-      this.thu = true;
-      this.fri = true;
-      this.sat = true;
-      this.sun = true;
-    } else {
-      this.mon = false;
-      this.tue = false;
-      this.wed = false;
-      this.thu = false;
-      this.fri = false;
-      this.sat = false;
-      this.sun = false;
-    }
-    
-  }
-
 }
